@@ -1,5 +1,5 @@
 include *.rst
-include uvtor/conf/templates/**/*
-graft uvtor
+include tsunami/_templates/**/*
+graft tsunami
 global-exclude __pycache__
 global-exclude *.py[co]
