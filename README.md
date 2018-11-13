@@ -5,7 +5,7 @@
 * Install
 
 ```sh
-pip install tsunami
+pip install tsunamiweb
 ```
 
 * Create Project
