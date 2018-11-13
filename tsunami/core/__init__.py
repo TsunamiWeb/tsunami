@@ -1,5 +1,6 @@
 from tsunami.conf import settings
 from tsunami.core.handlers import BaseHandler
+from tsunami.utils import list_appnames
 from tsunami import web
 import pkgutil
 import importlib
@@ -11,9 +12,13 @@ __METHODS = [
 
 
 def make_app(appname, autoreload=True):
-    __builtins__['__APPNAME__'] = appname
     app = web.Application()
-    auto_discover(appname, app)
+    [
+        auto_discover(
+            appname, app
+        ) for appname in (
+            list_appnames() if appname == 'all' else [appname])
+    ]
     return app
 
 
