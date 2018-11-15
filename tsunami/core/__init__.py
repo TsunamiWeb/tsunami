@@ -27,7 +27,6 @@ def get_routes_by_cls(cls):
         _c = cls()
         routes_ = []
         print(f'Add routes ({cls.__url__}, {cls})')
-
         for _m in __METHODS:
             routes_.append(
                 web.route(_m, _c.__url__, getattr(_c, _m)))

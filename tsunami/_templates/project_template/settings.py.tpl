@@ -2,7 +2,7 @@ from os.path import abspath, dirname
 from os import environ
 
 
-DEBUG = environ.get('DEBUG') == 'True'
+DEBUG = environ.get('DEBUG') != 'False'
 
 LISTEN_PORT = 8000
 

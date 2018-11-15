@@ -1,3 +1,3 @@
 from aiohttp import web
 
-VERSION = '2018.11.13'
+VERSION = '2018.11.15'
