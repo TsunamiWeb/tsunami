@@ -19,7 +19,5 @@ class Command(BaseCommand):
 
     def execute(self, **options):
         _appname = options.get('name')
-
         shutil.rmtree(os.path.join('apps', _appname))
-
         print(f'Successfully remove app {_appname}')

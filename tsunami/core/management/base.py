@@ -68,19 +68,6 @@ class BaseCommand:
 
     help = ''
 
-    # Configuration shortcuts that alter various logic.
-    _called_from_command_line = False
-    # Whether to wrap the output in a "BEGIN; COMMIT;"
-    output_transaction = False
-    leave_locale_alone = False
-    requires_migrations_checks = False
-    requires_system_checks = True
-    # Arguments, common to all commands, which aren't defined by the argument
-    # parser.
-    base_stealth_options = ('skip_checks', 'stderr', 'stdout')
-    # Command-specific options not defined by the argument parser.
-    stealth_options = ()
-
     def __init__(self, stdout=None, stderr=None):
         self.stdout = OutputWrapper(stdout or sys.stdout)
         self.stderr = OutputWrapper(stderr or sys.stderr)
@@ -130,7 +117,8 @@ class BaseCommand:
             sys.exit(1)
 
     def check(self):
-        pass
+        if not os.path.exists('.tsunami'):
+            raise CommandError('Invalid tsunami project')
 
     def execute(self, *args, **options):
 

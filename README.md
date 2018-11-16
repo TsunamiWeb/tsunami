@@ -48,4 +48,10 @@ class ExampleHandler(BaseHandler):
 tsunami runapp <appname>
 ```
 
+* Test your app
+
+```sh
+tsunami runtest <appname>
+```
+
 Then fetch your API with url ```http://127.0.0.1/api/v1.0/<appname>/example```
