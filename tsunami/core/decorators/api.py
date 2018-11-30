@@ -8,10 +8,10 @@ import traceback
 def standard_api(func):
 
     @wraps(func)
-    async def decorator(request, *args, **kwargs):
+    async def decorator(*args, **kwargs):
         try:
-            result = await func(request, *args, **kwargs)
-            if isinstance(result, dict) or not result:
+            result = await func(*args, **kwargs)
+            if isinstance(result, dict) or result is None:
                 response = {'code': _resp.CODE_0_SUCCESS}
                 response.update(result or {})
                 return web.json_response(response)
