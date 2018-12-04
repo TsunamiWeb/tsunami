@@ -1,5 +1,4 @@
 from tsunami.conf import settings
-from tsunami.core.cache import cache
 from tsunami import web
 import functools
 import pickle
