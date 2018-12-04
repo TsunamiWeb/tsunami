@@ -13,6 +13,10 @@ class Command(BaseCommand):
             help='Name of app',
         )
 
+    def check(self):
+        if not os.path.exists('.tsunami'):
+            raise CommandError('Invalid tsunami project')
+
     def _is_valid_name(self, name):
         if not re.match(r'^[a-zA-Z]+[\w_]+$', name):
             raise CommandError('Invalid project name')

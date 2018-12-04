@@ -22,6 +22,10 @@ class Command(BaseCommand):
                         top_level_dir=settings.ROOT_DIR))
             return suite
 
+    def check(self):
+        if not os.path.exists('.tsunami'):
+            raise CommandError('Invalid tsunami project')
+
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument(

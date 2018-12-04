@@ -117,8 +117,7 @@ class BaseCommand:
             sys.exit(1)
 
     def check(self):
-        if not os.path.exists('.tsunami'):
-            raise CommandError('Invalid tsunami project')
+        pass
 
     def execute(self, *args, **options):
 
