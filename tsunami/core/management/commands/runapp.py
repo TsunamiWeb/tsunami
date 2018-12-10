@@ -50,8 +50,10 @@ class Command(BaseCommand):
 
         parser.add_argument(
             '--logging', '-L', metavar='port',
-            default='INFO',
-            help='Logging Level',
+            default='info',
+            choices=['debug', 'info', 'warning', 'error'],
+            type=str.lower,
+            help='Logging Level'
         )
 
         parser.add_argument(
@@ -81,8 +83,14 @@ class Command(BaseCommand):
         _logging = options.get('logging')
         _mode = options.get('mode')
         _gargs = options.get('gunicorn_args')
+        logging.basicConfig(
+            level=getattr(logging, _logging.upper()),
+            format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
+            datefmt='%y%m%d %H:%M:%S'
+        )
 
-        logging.info(f'Server started, listen on {_address}:{_port}')
+        logging.info(f'Server starting with listening on {_address}:{_port}')
+
         app = make_app(_appname)
         if _mode == 'default':
             web.run_app(app, port=_port)

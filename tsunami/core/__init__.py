@@ -5,13 +5,14 @@ from tsunami import web
 import pkgutil
 import importlib
 import inspect
+import logging
 
 
 __METHODS = [
     'get', 'post', 'delete', 'put', 'head', 'connect', 'options', 'trace']
 
 
-def make_app(appname, autoreload=True):
+def make_app(appname):
     app = web.Application()
     [
         auto_discover(
@@ -26,7 +27,7 @@ def get_routes_by_cls(cls):
     if getattr(cls, '__routes__', False):
         _c = cls()
         routes_ = []
-        print(f'Add routes ({cls.__url__}, {cls})')
+        logging.debug(f'Add routes ({cls.__url__}, {cls})')
         for _m in __METHODS:
             routes_.append(
                 web.route(_m, _c.__url__, getattr(_c, _m)))
@@ -39,6 +40,7 @@ def auto_discover(appname, app):
 
     for loader, modname, ispkg in pkgutil.walk_packages(handlers.__path__):
         _module = loader.find_module(modname).load_module(modname)
+
         [
             app.add_routes(get_routes_by_cls(cls))
                 for name, cls in inspect.getmembers(_module)

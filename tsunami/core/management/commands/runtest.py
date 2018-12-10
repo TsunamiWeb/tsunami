@@ -1,10 +1,11 @@
-from tsunami.core.management.base import BaseCommand
+from tsunami.core.management.base import BaseCommand, CommandError
 from tsunami.utils import list_appnames
 from tsunami.conf import settings
 import os
 import sys
 import pkgutil
 import unittest
+import logging
 
 
 class Command(BaseCommand):
@@ -12,7 +13,7 @@ class Command(BaseCommand):
     def _get_tests(self, *appnames):
         if 'all' in appnames:
             return unittest.defaultTestLoader.discover(
-                    'apps/', top_level_dir=settings.ROOT_DIR)
+                'apps/', top_level_dir=settings.ROOT_DIR)
         else:
             suite = unittest.suite.TestSuite()
             for app in appnames:
@@ -34,7 +35,22 @@ class Command(BaseCommand):
             help='Name of app',
             default=['all']
         )
+        parser.add_argument(
+            '--logging', '-L', metavar='port',
+            default='warning',
+            choices=['debug', 'info', 'warning', 'error'],
+            type=str.lower,
+            help='Logging Level'
+        )
 
     def execute(self, **options):
+        _logging = options.get('logging')
+
+        logging.basicConfig(
+            level=getattr(logging, _logging.upper()),
+            format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
+            datefmt='%y%m%d %H:%M:%S'
+        )
+
         unittest.TextTestRunner().run(
             self._get_tests(*options.get('modules')))
