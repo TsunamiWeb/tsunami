@@ -1,6 +1,6 @@
 from tsunami.conf import settings
 from tsunami.core.handlers import BaseHandler
-from tsunami.utils import list_appnames
+from tsunami.utils import list_appnames, log
 from tsunami import web
 import pkgutil
 import importlib
@@ -12,7 +12,16 @@ __METHODS = [
     'get', 'post', 'delete', 'put', 'head', 'connect', 'options', 'trace']
 
 
-def make_app(appname):
+def make_app(appname, *args, **kwargs):
+    if not hasattr(settings, 'LOGGING'):
+
+        log.configure_logging(
+            log.DEFAULT_LOGGING)
+    else:
+        log.configure_logging(
+            settings.LOGGING
+        )
+
     app = web.Application()
     [
         auto_discover(

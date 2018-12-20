@@ -4,7 +4,7 @@ try:
 except:
     pass
 
-VERSION = '2018.12.10'
+VERSION = '2018.12.20'
 
 __ALL__ = [
     '*'

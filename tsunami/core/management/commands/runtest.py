@@ -1,5 +1,5 @@
 from tsunami.core.management.base import BaseCommand, CommandError
-from tsunami.utils import list_appnames
+from tsunami.utils import list_appnames, log
 from tsunami.conf import settings
 import os
 import sys
@@ -46,11 +46,8 @@ class Command(BaseCommand):
     def execute(self, **options):
         _logging = options.get('logging')
 
-        logging.basicConfig(
-            level=getattr(logging, _logging.upper()),
-            format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
-            datefmt='%y%m%d %H:%M:%S'
-        )
+        log.DEFAULT_LOGGING[
+                'handlers']['console']['level'] = _logging.upper()
 
         unittest.TextTestRunner().run(
             self._get_tests(*options.get('modules')))

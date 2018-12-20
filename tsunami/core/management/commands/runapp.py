@@ -1,6 +1,8 @@
 from tsunami import web
 from tsunami.core.management.base import BaseCommand, CommandError
 from tsunami.core import make_app
+from tsunami.utils import log
+from tsunami.conf import settings
 from aiohttp import GunicornUVLoopWebWorker
 from gunicorn.six import iteritems
 import asyncio
@@ -83,15 +85,14 @@ class Command(BaseCommand):
         _logging = options.get('logging')
         _mode = options.get('mode')
         _gargs = options.get('gunicorn_args')
-        logging.basicConfig(
-            level=getattr(logging, _logging.upper()),
-            format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
-            datefmt='%y%m%d %H:%M:%S'
-        )
+
+        log.DEFAULT_LOGGING[
+            'handlers']['console']['level'] = _logging.upper()
+
+        app = make_app(_appname)
 
         logging.info(f'Server starting with listening on {_address}:{_port}')
 
-        app = make_app(_appname)
         if _mode == 'default':
             web.run_app(app, port=_port)
         elif _mode == 'gunicorn':
