@@ -1,3 +1,4 @@
+from gunicorn.glogging import Logger
 import logging
 import logging.config
 
@@ -20,7 +21,8 @@ DEFAULT_LOGGING = {
     'formatters': {
         'detailed': {
             'class': 'logging.Formatter',
-            'format': '[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s'
+            'format': ('[%(asctime)s, %(name)s] {%(filename)s:%(lineno)d}'
+                       ' %(levelname)s - %(message)s')
         }
     },
     'handlers': {
@@ -31,9 +33,7 @@ DEFAULT_LOGGING = {
         }
     },
     'loggers': {
-        'aiohttp.access': {
-            'level': 'INFO'
-        }
+
     },
     'root': {
         'level': 'DEBUG',

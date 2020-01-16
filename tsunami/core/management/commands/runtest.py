@@ -1,5 +1,6 @@
 from tsunami.core.management.base import BaseCommand, CommandError
-from tsunami.utils import list_appnames, log
+from tsunami.utils import log
+from tsunami.core import list_appnames
 from tsunami.conf import settings
 import os
 import sys

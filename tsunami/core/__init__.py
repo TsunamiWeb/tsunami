@@ -1,15 +1,34 @@
 from tsunami.conf import settings
 from tsunami.core.handlers import BaseHandler
-from tsunami.utils import list_appnames, log
+from tsunami.utils import log
 from tsunami import web
 import pkgutil
 import importlib
 import inspect
 import logging
+import os
 
 
 __METHODS = [
     'get', 'post', 'delete', 'put', 'head', 'connect', 'options', 'trace']
+
+
+def get_appname(cls):
+    _cpath = inspect.getfile(cls)
+    _common_prefix = os.path.commonprefix(
+        [
+            _cpath,
+            settings.ROOT_DIR
+        ])
+    return os.path.relpath(
+        _cpath, _common_prefix)[5:].split('/')[0]
+
+
+def list_appnames():
+    return [
+        f for f in os.listdir(
+            os.path.join(settings.ROOT_DIR, 'apps')
+        ) if not f.startswith('_')]
 
 
 def make_app(appname, *args, **kwargs):
@@ -52,6 +71,6 @@ def auto_discover(appname, app):
 
         [
             app.add_routes(get_routes_by_cls(cls))
-                for name, cls in inspect.getmembers(_module)
-                    if inspect.isclass(cls) and issubclass(cls, BaseHandler)
+            for name, cls in inspect.getmembers(_module)
+            if inspect.isclass(cls) and issubclass(cls, BaseHandler)
         ]

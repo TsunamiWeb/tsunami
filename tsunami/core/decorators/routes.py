@@ -1,5 +1,5 @@
 from tsunami import web
-from tsunami.utils import get_appname
+from tsunami.core import get_appname
 from functools import wraps
 
 

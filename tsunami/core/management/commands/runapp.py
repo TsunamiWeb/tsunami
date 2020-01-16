@@ -4,7 +4,6 @@ from tsunami.core import make_app
 from tsunami.utils import log
 from tsunami.conf import settings
 from aiohttp import GunicornUVLoopWebWorker
-from gunicorn.six import iteritems
 import asyncio
 import uvloop
 import os
@@ -23,9 +22,9 @@ class TsunamiGunicornApplication(gunicorn.app.base.BaseApplication):
         super(TsunamiGunicornApplication, self).__init__()
 
     def load_config(self):
-        config = dict([(key, value) for key, value in iteritems(self.options)
+        config = dict([(key, value) for key, value in self.options.items()
                        if key in self.cfg.settings and value is not None])
-        for key, value in iteritems(config):
+        for key, value in config.items():
             self.cfg.set(key.lower(), value)
 
     def load(self):
@@ -98,7 +97,8 @@ class Command(BaseCommand):
         elif _mode == 'gunicorn':
             _gconf = {
                 'worker_class': 'aiohttp.GunicornUVLoopWebWorker',
-                'bind': f'{_address}:{_port}'
+                'bind': f'{_address}:{_port}',
+                'access_log_format': '%a "%r" %s %b "%{Referer}i" "%{User-Agent}i" %Tf'
             }
             if _gargs:
                 _gconf.update(

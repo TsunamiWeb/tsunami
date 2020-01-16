@@ -1,6 +1,6 @@
 from tsunami import test_utils
 from tsunami import web
-from tsunami.utils import get_appname
+from tsunami.core import get_appname
 from tsunami.core import make_app
 
 
