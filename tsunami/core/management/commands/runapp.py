@@ -88,7 +88,7 @@ class Command(BaseCommand):
         log.DEFAULT_LOGGING[
             'handlers']['console']['level'] = _logging.upper()
 
-        app = make_app(_appname)
+        app = make_app(_appname, _mode)
 
         logging.info(f'Server starting with listening on {_address}:{_port}')
 
